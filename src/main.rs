@@ -96,22 +96,24 @@ fn main() -> std::io::Result<()> {
     let path = Path::new("image.ppm");
     let mut file = File::create(&path)?;
 
-    let width = 600;
-    let height = 600;
+    let width = 900;
+    let height = 900;
 
     let white = Vec3 {x: 255.0, y: 255.0, z: 255.0};
+    let black = Vec3 {x: 0.0, y: 0.0, z: 0.0};
     let red = Vec3 {x: 255.0, y: 0.0, z: 0.0};
 
     let sphere = Sphere {center: Vec3 {x: width as f64 * 0.5, y: height as f64 * 0.5, z: 50.0}, radius: 50.0};
     let light = Sphere {center: Vec3 {x: 0.0, y: 0.0, z: 50.0}, radius: 1.0};
 
-    let mut pixel_color = Vec3 {x: 0.0, y: 0.0, z: 0.0};
+    let mut pixel_color: Vec3;
 
     file.write_all(format!("P3\n{} {}\n255\n", width, height).as_bytes())?;
 
     for i in 0..height {
         for j in 0..width {
             let ray = Ray {origin: Vec3 {x: j as f64, y: i as f64, z: 0 as f64}, direction: Vec3 {x: 0.0, y: 0.0, z: 1.0} };
+            pixel_color = black;
             
             let (does_intersect, t) = sphere.intersect(ray); 
 
